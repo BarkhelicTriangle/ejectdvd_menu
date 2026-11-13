@@ -57,6 +57,10 @@ int main(void)
 
     sleep(5);
     
+    padPortClose(0, 0);
+    padEnd();
+    SifLoadFileExit();
+
     return 0;
 }
 
