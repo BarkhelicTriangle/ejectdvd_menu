@@ -21,9 +21,6 @@ int main(void)
     scr_printf("padPortOpen (!= 0: OK): %d\n", ret);
 
     sleep(10);
-
-    //scr_printf("Hello, World!");
-    //sleep(10);
     
     return 0;
 }
