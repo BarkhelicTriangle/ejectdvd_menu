@@ -9,6 +9,21 @@
 static int GalaPadBuffer[256] __attribute__((aligned(64)));
 static int ret = -35;
 
+void wait_for_pad(int port, int slot) 
+{
+    int padState;
+    while (1)
+    {
+        padState = padGetState(port, slot);
+        if (padState == PAD_STATE_STABLE)
+            break;
+
+        sleep(1);
+    }
+
+    return;
+}
+
 int main(void) 
 {
     // Reset IOP to ensure a clean slate
@@ -37,15 +52,7 @@ int main(void)
 
     //wait for controller to be ready...
     scr_printf("Waiting for controller to be ready... ");
-    int padState;
-    while (1)
-    {
-        padState = padGetState(0, 0);
-        if (padState == PAD_STATE_STABLE)
-            break;
-
-        sleep(1);
-    }
+    wait_for_pad(0, 0);    
     scr_printf("Ready!\n");
 
     sleep(5);
