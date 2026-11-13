@@ -14,11 +14,11 @@ int main(void)
 
     //init libpad
     ret = padInit(0);
-    scr_printf("padInit: %d", ret);
+    scr_printf("padInit: %d\n", ret);
 
     ret = -35;
     ret = padPortOpen(0, 0, GalaPadBuffer);
-    scr_printf("padPortOpen (!= 0: OK): %d", ret);
+    scr_printf("padPortOpen (!= 0: OK): %d\n", ret);
 
     sleep(10);
 
