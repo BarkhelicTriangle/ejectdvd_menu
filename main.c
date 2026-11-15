@@ -58,14 +58,16 @@ int main(void)
 
     scr_printf("No functionality implemented yet. START to exit");
 
-
     struct padButtonStatus buttons;
     u16 buttons_prevframe = 0xFFFF;
     u16 buttons_thisframe;
     while (1) 
     {
         //check button presses
-        padRead(0, 0, &buttons);
+        ret = padRead(0, 0, &buttons);
+        if (ret == 0)
+            scr_printf("padRead errored.\n");
+
         buttons_thisframe = 0xFFFF ^ buttons.btns;
             
         // Discern what buttons were actually pressed by comparing readings
