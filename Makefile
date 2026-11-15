@@ -5,6 +5,9 @@ EE_LIBS = -ldebug -lc -lpad
 all: $(EE_BIN) 
 	$(EE_STRIP) --strip-all $(EE_BIN)
 
+clean:
+	rm src/*.o
+	rm ejectdvd_menu.elf
 
 run: $(EE_BIN)
 	ps2client execee host:$(EE_BIN)
