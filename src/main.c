@@ -26,7 +26,7 @@ void wait_for_pad(int port, int slot)
 
 int main(void) 
 {
-    // Reset IOP to ensure a clean slate
+    // Reset IOP
     while(SifIopReset("", 0) != 1);
     while(SifIopSync() != 1);
     
@@ -56,7 +56,7 @@ int main(void)
     wait_for_pad(0, 0);    
     scr_printf("Ready!\n");
 
-    scr_printf("No functionality implemented yet. START to exit");
+    scr_printf("CROSS = Open DVD Drive\nCIRCLE = Close DVD DRIVE\nSTART = Exit to browser\n");
 
     struct padButtonStatus buttons;
     u16 buttons_prevframe = 0xFFFF;
@@ -72,9 +72,16 @@ int main(void)
         // Discern what buttons were actually pressed by comparing readings
         u16 pressed = buttons_thisframe & ~buttons_prevframe;
 
-        // exit if START pressed
+        // --- Actual functionality logic begins here. ---
         if (pressed & PAD_START)
             break;
+
+        if (pressed & PAD_CROSS)
+            scr_printf("Open drive [unimplemented].\n");
+    
+        if (pressed & PAD_CIRCLE)
+            scr_printf("Close drive [unimplemented].\n");
+        // ------------------------------------------------
 
         buttons_prevframe = buttons_thisframe;
         RotateThreadReadyQueue(0);
