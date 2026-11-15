@@ -6,8 +6,10 @@
 #include <iopcontrol.h>
 #include <kernel.h>
 
-static int padBuffer[256] __attribute__((aligned(64)));
-static u8 ret;
+#include "dvd.c"
+
+int padBuffer[256] __attribute__((aligned(64)));
+u8 ret;
 
 void wait_for_pad(int port, int slot) 
 {
@@ -43,6 +45,8 @@ int main(void)
     ret = SifLoadModule("rom0:PADMAN", 0, NULL);
     scr_printf("load PADMAN: %d\n", ret);
 
+    init_dvddrive();
+
     //init libpad
     ret = padInit(0);
     scr_printf("padInit: %d\n", ret);
@@ -77,10 +81,10 @@ int main(void)
             break;
 
         if (pressed & PAD_CROSS)
-            scr_printf("Open drive [unimplemented].\n");
+            open_dvddrive();
     
         if (pressed & PAD_CIRCLE)
-            scr_printf("Close drive [unimplemented].\n");
+            close_dvddrive();
         // ------------------------------------------------
 
         buttons_prevframe = buttons_thisframe;
