@@ -6,7 +6,7 @@
 #include <iopcontrol.h>
 #include <kernel.h>
 
-static int GalaPadBuffer[256] __attribute__((aligned(64)));
+static int padBuffer[256] __attribute__((aligned(64)));
 static u8 ret;
 
 void wait_for_pad(int port, int slot) 
@@ -48,7 +48,7 @@ int main(void)
     scr_printf("padInit: %d\n", ret);
 
     //open the controller
-    ret = padPortOpen(0, 0, GalaPadBuffer);
+    ret = padPortOpen(0, 0, padBuffer);
     scr_printf("padPortOpen (!= 0: OK): %d\n", ret);
 
     //wait for controller to be ready...
