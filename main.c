@@ -1,6 +1,5 @@
-#include <debug.h>  // for scr_printf
-#include <unistd.h> // for sleep
-#include <debug.h>
+#include <debug.h> 
+#include <unistd.h>
 #include <libpad.h>
 #include <loadfile.h>
 #include <sifrpc.h>
