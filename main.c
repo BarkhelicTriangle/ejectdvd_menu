@@ -5,6 +5,7 @@
 #include <loadfile.h>
 #include <sifrpc.h>
 #include <iopcontrol.h>
+#include <kernel.h>
 
 static int GalaPadBuffer[256] __attribute__((aligned(64)));
 static int ret = -35;
@@ -55,12 +56,35 @@ int main(void)
     wait_for_pad(0, 0);    
     scr_printf("Ready!\n");
 
-    sleep(5);
-    
+    scr_printf("No functionality implemented yet. START to exit");
+
+
+    struct padButtonStatus buttons;
+    u16 buttons_prevframe = 0xFFFF;
+    u16 buttons_thisframe;
+    while (1) 
+    {
+        //check button presses
+        padRead(0, 0, &buttons);
+        buttons_thisframe = 0xFFFF ^ buttons.btns;
+            
+        // Discern what buttons were actually pressed by comparing readings
+        u16 pressed = buttons_thisframe & ~buttons_prevframe;
+
+        // exit if START pressed
+        if (pressed & PAD_START)
+        {
+            break;
+        }
+
+        buttons_prevframe = buttons_thisframe;
+
+        RotateThreadReadyQueue(0);
+    }
+
     padPortClose(0, 0);
     padEnd();
     SifLoadFileExit();
 
     return 0;
 }
-
