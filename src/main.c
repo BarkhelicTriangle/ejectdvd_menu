@@ -48,7 +48,6 @@ int main(void)
     scr_printf("padInit: %d\n", ret);
 
     //open the controller
-    ret = -35;
     ret = padPortOpen(0, 0, GalaPadBuffer);
     scr_printf("padPortOpen (!= 0: OK): %d\n", ret);
 
@@ -76,14 +75,12 @@ int main(void)
 
         // exit if START pressed
         if (pressed & PAD_START)
-        {
             break;
-        }
 
         buttons_prevframe = buttons_thisframe;
-
         RotateThreadReadyQueue(0);
     }
+
 
     padPortClose(0, 0);
     padEnd();

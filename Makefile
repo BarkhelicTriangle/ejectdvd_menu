@@ -1,5 +1,5 @@
 EE_BIN = ejectdvd_menu.elf
-EE_OBJS = main.o
+EE_OBJS = src/main.o
 EE_LIBS = -ldebug -lc -lpad
 
 all: $(EE_BIN) 
