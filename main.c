@@ -39,7 +39,9 @@ int main(void)
     //load padman
     SifLoadFileInit();
     ret = SifLoadModule("rom0:SIO2MAN", 0, NULL);
-    ret = SifLoadModule("rom0:PADMAN", 0, NULL);  // manages controllers
+    scr_printf("load SI02MAN: %d\n", ret);
+    ret = SifLoadModule("rom0:PADMAN", 0, NULL);
+    scr_printf("load PADMAN: %d\n", ret);
 
     //init libpad
     ret = padInit(0);
