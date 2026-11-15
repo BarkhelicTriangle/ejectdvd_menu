@@ -7,11 +7,11 @@
 #include <kernel.h>
 
 static int GalaPadBuffer[256] __attribute__((aligned(64)));
-static int ret = -35;
+static u8 ret;
 
 void wait_for_pad(int port, int slot) 
 {
-    int padState;
+    u8 padState;
     while (1)
     {
         padState = padGetState(port, slot);
@@ -27,8 +27,8 @@ void wait_for_pad(int port, int slot)
 int main(void) 
 {
     // Reset IOP to ensure a clean slate
-    while(!SifIopReset("", 0));
-    while(!SifIopSync());
+    while(SifIopReset("", 0) != 1);
+    while(SifIopSync() != 1);
     
     sceSifInitRpc(0);
 
@@ -67,7 +67,6 @@ int main(void)
         ret = padRead(0, 0, &buttons);
         if (ret == 0)
             scr_printf("padRead errored.\n");
-
         buttons_thisframe = 0xFFFF ^ buttons.btns;
             
         // Discern what buttons were actually pressed by comparing readings
@@ -80,7 +79,6 @@ int main(void)
         buttons_prevframe = buttons_thisframe;
         RotateThreadReadyQueue(0);
     }
-
 
     padPortClose(0, 0);
     padEnd();
