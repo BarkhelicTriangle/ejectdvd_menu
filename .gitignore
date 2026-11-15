@@ -1,2 +1,2 @@
-ejectdvd_menu.elf
-main.o
+*.elf
+src/*.o
