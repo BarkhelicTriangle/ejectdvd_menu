@@ -90,7 +90,12 @@ int main(void)
         //check button presses
         ret = padRead(0, 0, &buttons);
         if (ret == 0)
-            scr_printf("padRead errored.\n");
+        {
+            scr_printf("Can't read controller! Waiting for controller... ");
+            wait_for_pad(0, 0);
+            scr_printf("Reconnected.\n");
+        }
+
         buttons_thisframe = 0xFFFF ^ buttons.btns;
             
         // Discern what buttons were actually pressed by comparing readings
