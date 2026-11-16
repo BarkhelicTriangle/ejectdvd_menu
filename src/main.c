@@ -7,6 +7,8 @@
 #include <kernel.h>
 #include <libcdvd.h>
 
+#define NDEBUG
+
 int padBuffer[256] __attribute__((aligned(64)));
 u8 ret;
 
@@ -39,25 +41,39 @@ int main(void)
 
     //load necessary modules
     ret = SifLoadFileInit();
+#ifndef NDEBUG
     scr_printf("SifLoadFileInit (!= 0: OK): %d\n", ret);
+#endif
     ret = SifLoadModule("rom0:SIO2MAN", 0, NULL);   // needed for controllers
+#ifndef NDEBUG
     scr_printf("load SI02MAN: %d\n", ret);
+#endif
     ret = SifLoadModule("rom0:PADMAN", 0, NULL);    // needed for controllers
+#ifndef NDEBUG
     scr_printf("load PADMAN: %d\n", ret);
+#endif
     ret = SifLoadModule("rom0:CDVDMAN", 0, NULL);   // needed for the CD/DVD drive
+#ifndef NDEBUG
     scr_printf("load CDVDMAN: %d\n", ret);
+#endif
 
     //init libcdvd
     ret = sceCdInit(SCECdINIT);
+#ifndef NDEBUG
     scr_printf("sceCdInit (!= 0: OK): %d\n", ret);
+#endif
 
     //init libpad
     ret = padInit(0);
+#ifndef NDEBUG
     scr_printf("padInit: %d\n", ret);
+#endif
 
     //open the controller
     ret = padPortOpen(0, 0, padBuffer);
+#ifndef NDEBUG
     scr_printf("padPortOpen (!= 0: OK): %d\n", ret);
+#endif
 
     //wait for controller to be ready...
     scr_printf("Waiting for controller to be ready... ");
