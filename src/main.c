@@ -5,8 +5,7 @@
 #include <sifrpc.h>
 #include <iopcontrol.h>
 #include <kernel.h>
-
-#include "dvd.c"
+#include <libcdvd.h>
 
 int padBuffer[256] __attribute__((aligned(64)));
 u8 ret;
@@ -38,14 +37,18 @@ int main(void)
     init_scr();
     sleep(1);
 
-    //load padman
+    //load necessary modules
     SifLoadFileInit();
-    ret = SifLoadModule("rom0:SIO2MAN", 0, NULL);
+    ret = SifLoadModule("rom0:SIO2MAN", 0, NULL);   // needed for controllers
     scr_printf("load SI02MAN: %d\n", ret);
-    ret = SifLoadModule("rom0:PADMAN", 0, NULL);
+    ret = SifLoadModule("rom0:PADMAN", 0, NULL);    // needed for controllers
     scr_printf("load PADMAN: %d\n", ret);
+    ret = SifLoadModule("rom0:CDVDMAN", 0, NULL);   // needed for the CD/DVD drive
+    scr_printf("load CDVDMAN: %d\n", ret);
 
-    init_dvddrive();
+    //init libcdvd
+    ret = sceCdInit(SCECdINIT);
+    scr_printf("sceCdInit (!= 0: OK): %d\n", ret);
 
     //init libpad
     ret = padInit(0);
@@ -80,17 +83,29 @@ int main(void)
         if (pressed & PAD_START)
             break;
 
-        if (pressed & PAD_CROSS)
-            open_dvddrive();
+        if (pressed & PAD_CROSS) 
+        {
+            scr_printf("Opening...\n");
+            ret = sceCdTrayReq(SCECdTrayOpen, NULL);
+            if (ret != 1)
+                scr_printf("Open tray failed: %d\n", ret);
+        }
     
         if (pressed & PAD_CIRCLE)
-            close_dvddrive();
+        {
+            scr_printf("Closing...\n");
+            ret = sceCdTrayReq(SCECdTrayClose, NULL);
+            if (ret != 1)
+                scr_printf("Close tray failed: %d\n", ret);
+        }
         // ------------------------------------------------
 
         buttons_prevframe = buttons_thisframe;
         RotateThreadReadyQueue(0);
     }
 
+    //de-initialize the stuff we used
+    sceCdInit(SCECdEXIT);
     padPortClose(0, 0);
     padEnd();
     SifLoadFileExit();
