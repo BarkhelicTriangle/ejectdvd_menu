@@ -139,7 +139,7 @@ int main(void)
         // ------------------------------------------------
 
         buttons_prevframe = buttons_thisframe;
-        RotateThreadReadyQueue(0);
+        nopdelay();
     }
 
     //de-initialize the stuff we used
