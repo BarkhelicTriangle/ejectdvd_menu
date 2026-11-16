@@ -38,7 +38,8 @@ int main(void)
     sleep(1);
 
     //load necessary modules
-    SifLoadFileInit();
+    ret = SifLoadFileInit();
+    scr_printf("SifLoadFileInit (!= 0: OK): %d\n", ret);
     ret = SifLoadModule("rom0:SIO2MAN", 0, NULL);   // needed for controllers
     scr_printf("load SI02MAN: %d\n", ret);
     ret = SifLoadModule("rom0:PADMAN", 0, NULL);    // needed for controllers
