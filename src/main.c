@@ -107,18 +107,34 @@ int main(void)
 
         if (pressed & PAD_CROSS) 
         {
-            scr_printf("Opening...\n");
-            ret = sceCdTrayReq(SCECdTrayOpen, NULL);
-            if (ret != 1)
-                scr_printf("Open tray failed: %d\n", ret);
+            //check if the tray is already open to prevent errors
+            if (sceCdStatus() == SCECdStatShellOpen)
+            {
+                scr_printf("Tray is already open!\n");
+            }
+            else
+            {
+                scr_printf("Opening...\n");
+                ret = sceCdTrayReq(SCECdTrayOpen, NULL);
+                if (ret != 1)
+                    scr_printf("Open tray failed: %d\n", ret);
+            }
         }
     
         if (pressed & PAD_CIRCLE)
         {
-            scr_printf("Closing...\n");
-            ret = sceCdTrayReq(SCECdTrayClose, NULL);
-            if (ret != 1)
-                scr_printf("Close tray failed: %d\n", ret);
+            //check if the tray is already closed to prevent errors
+            if (sceCdStatus() != SCECdStatShellOpen)
+            {
+                scr_printf("Tray is already closed!\n");
+            }
+            else
+            {
+                scr_printf("Closing...\n");
+                ret = sceCdTrayReq(SCECdTrayClose, NULL);
+                if (ret != 1)
+                    scr_printf("Close tray failed: %d\n", ret);
+            }
         }
         // ------------------------------------------------
 
