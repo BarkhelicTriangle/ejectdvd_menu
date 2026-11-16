@@ -1,5 +1,3 @@
-This does not work yet.
-
 ejectdvd_menu can be compiled by running "make" in the root directory after installing PS2SDK.
 
 The PS2 I own is a SCPH-30001R, so that is what I use in testing. If something should work on your model PS2 but doesn't, open an issue or submit a PR.
