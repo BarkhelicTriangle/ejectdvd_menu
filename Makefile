@@ -7,7 +7,7 @@ all: $(EE_BIN)
 
 clean:
 	rm src/*.o
-	rm ejectdvd_menu.elf
+	rm *.elf
 
 run: $(EE_BIN)
 	ps2client execee host:$(EE_BIN)
