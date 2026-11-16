@@ -8,6 +8,7 @@
 #include <libcdvd.h>
 
 #define NDEBUG
+#define VERSION "v1.0"
 
 int padBuffer[256] __attribute__((aligned(64)));
 u8 ret;
@@ -25,6 +26,12 @@ void wait_for_pad(int port, int slot)
     }
 
     return;
+}
+
+void set_screen()
+{
+    scr_clear();
+    scr_printf("ejectdvd_menu (%s) by BarkhelicTriangle\n\nCROSS = Open tray\nCIRCLE = Close tray\nSTART = Exit\n\n", VERSION);
 }
 
 int main(void) 
@@ -78,9 +85,7 @@ int main(void)
     //wait for controller to be ready...
     scr_printf("Waiting for controller to be ready... ");
     wait_for_pad(0, 0);    
-    scr_printf("Ready!\n");
-
-    scr_printf("CROSS = Open DVD Drive\nCIRCLE = Close DVD DRIVE\nSTART = Exit to browser\n");
+    set_screen();
 
     struct padButtonStatus buttons;
     u16 buttons_prevframe = 0xFFFF;
@@ -91,6 +96,8 @@ int main(void)
         ret = padRead(0, 0, &buttons);
         if (ret == 0)
         {
+            set_screen();
+
             scr_printf("Can't read controller! Waiting for controller... ");
             wait_for_pad(0, 0);
             scr_printf("Reconnected.\n");
@@ -107,6 +114,8 @@ int main(void)
 
         if (pressed & PAD_CROSS) 
         {
+            set_screen();
+
             //check if the tray is already open to prevent errors
             if (sceCdStatus() == SCECdStatShellOpen)
             {
@@ -123,6 +132,8 @@ int main(void)
     
         if (pressed & PAD_CIRCLE)
         {
+            set_screen();
+
             //check if the tray is already closed to prevent errors
             if (sceCdStatus() != SCECdStatShellOpen)
             {
