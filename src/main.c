@@ -8,7 +8,7 @@
 #include <libcdvd.h>
 
 #define NDEBUG
-#define VERSION "v1.0"
+#define VERSION "v1.1-bleeding"
 
 int padBuffer[256] __attribute__((aligned(64)));
 u8 ret;
